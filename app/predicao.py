@@ -2,12 +2,6 @@ import streamlit as st
 
 class Predicao:
     def __init__(self):
-        st.set_page_config(
-            initial_sidebar_state='collapsed',
-            page_title="Hipotireoidismo",
-            page_icon='app/icon/cilab.png',
-            layout="wide",
-            )
         self.page()
         
     def page(self):
