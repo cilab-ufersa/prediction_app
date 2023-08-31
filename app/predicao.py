@@ -39,9 +39,15 @@ class Predicao:
         disturbio = st.selectbox("Possui algum distúrbio da tireoide?", ("Não", "Sim"), key="sick", help="Se o paciente possui algum distúrbio da tireoide já conhecido")
         tsh = st.number_input("TSH *",min_value=0.0, max_value=600.0, value=0.0, key="tsh", help="TSH é a sigla para hormônio estimulante da tireoide, que é produzido pela glândula pituitária")
         t3 = st.number_input("T3 *",min_value=0.0, max_value=11.0, value=0.0, key="t3", help="T3 é a sigla para triiodotironina, que é um hormônio produzido pela glândula tireoide")
-        t4 = st.number_input("T4 *",min_value=0.0, max_value=500.0, value=0.0, key="t4", help="T4 é a sigla para tiroxina, que é um hormônio produzido pela glândula tireoide")
+        tt4 = st.number_input("T4 Total *",min_value=0.0, max_value=500.0, value=0.0, key="tt4", help="TT4 é a sigla para tiroxina total, que é um hormônio produzido pela glândula tireoide")
+        fti = st.number_input("FTI *",min_value=0.0, max_value=1000.0, value=0.0, key="fti", help="FTI é a sigla para índice de tiroxina livre, que é um hormônio produzido pela glândula tireoide")
+        t4u = st.number_input("T4 Livre *",min_value=0.0, max_value=3.0, value=0.0, key="t4u", help="Tiroxina livre, que é um hormônio produzido pela glândula tireoide")
+        i131 = st.number_input("Tratamento com iodo-131 *",min_value=0.0, max_value=10.0, value=0.0, key = "i131", help="O tratamento com iodo-131 é um procedimento médico utilizado principalmente para tratar condições da tireoide")
         st.markdown('---')
-        button_Verify = (tsh == 0) or (t3 == 0) or (t4 == 0)
+        tt4_measured = True
+        t4u_measured = True
+        t3_measured = True
+        button_Verify = (tsh == 0) or (t3 == 0) or (t4u == 0) or (tt4 == 0) or (fti == 0) or (i131 == 0)
         if button_Verify:
             st.error("Preencha os campos Obrigatórios! *")
         but1, but2, but3 = st.columns(3)
@@ -59,3 +65,7 @@ class Predicao:
         st.session_state.tsh = 0.0
         st.session_state.t3 = 0.0
         st.session_state.t4 = 0.0
+        st.session_state.tt4 = 0.0
+        st.session_state.fti = 0.0
+        st.session_state.t4u = 0.0
+        st.session_state.i131 = 0.0
