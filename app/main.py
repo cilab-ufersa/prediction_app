@@ -37,7 +37,7 @@ class Main():
         
         st.header("Sobre diagnósticos")
         st.markdown("O hipotireoidismo é uma disfunção que pode ser diagnóstificada atravez de avaliação clínica, exames físico para procurar sinais de hipotireoidismo, sintomas do paciente, histórico médico. outra maneira de diagnóstico, exames laboratoriais, com base em exames de sangue, observando-se os níveis homonais do TSH, T4, e T3. Auxiliado por um fluxograma.")
-        st.image("app/icon/fluxograma.png","http://www.hu.ufsc.br/setores/endocrinologia/wp-content/uploads/sites/23/2015/01/PROTOCOLO-DE-HIPOTIREOIDISMO-2-NO-ADULTO-OK-20-de-julho.pdf",width=528)
+        st.image("app/icon/fluxograma.png",width=900)
         st.markdown("A interpretação dos resultados pode tornar o diagnóstico desafiador para os profissionais de saúde. Com o objetivo de auxiliar nessa questão, um modelo de inteligência artificial foi treinado para prever o diagnóstico do paciente com base em seus níveis hormonais. No entanto, é importante lembrar que a inteligência artificial pode apresentar falsos positivos e falsos negativos; portanto, seu resultado não deve ser considerado absoluto e não deve substituir o julgamento clínico do profissional de saúde. É recomendado que o resultado da inteligência artificial seja interpretado com cautela e que o diagnóstico seja confirmado pelo profissional de saúde.")
         
         st.header("Por que realizar um diagnóstico utilizando inteligência artificial?")
