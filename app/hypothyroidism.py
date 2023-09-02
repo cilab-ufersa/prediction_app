@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 
-class Predicao:
+class hypothyroidism:
     def __init__(self):
         self.page()
         

@@ -1,5 +1,6 @@
 import streamlit as st
-from predicao import *
+from hypothyroidism import *
+from euthyroidism import *
 
 class Main():
     def __init__(self):
@@ -17,7 +18,10 @@ class Main():
         if st.session_state.page == 0:
             self.home()
         if st.session_state.page == 1:
-            Predicao()
+            euthyroidism(path="models/StackingClassifier.sav")
+            st.button("Voltar",on_click=lambda:self.set_page(0))
+        if st.session_state.page == 2:
+            hypothyroidism()
             st.button("Voltar",on_click=lambda:self.set_page(0))
 
     def set_page(self,numero):
@@ -49,7 +53,8 @@ class Main():
         st.header("Realize o diagnóstico utilizando o modelo de inteligência artificial") 
         st.markdown('<style>div.row-widget.stButton > button {margin-left: 45%;}</style>', unsafe_allow_html=True)
         st.markdown('<style>div.row-widget.stButton > button {color: white; background-color: #1E90FF;}</style>', unsafe_allow_html=True)
-        st.button("Realizar Diagnóstico",on_click=lambda:self.set_page(1))
+        st.button("Realizar Diagnóstico Hipotireoidismo",on_click=lambda:self.set_page(2))
+        st.button("Realizar Diagnóstico Eutireoidismo",on_click=lambda:self.set_page(1))
         st.markdown("---")
         st.markdown('<style>h3{font-size: 15px;}</style>', unsafe_allow_html=True)
         st.subheader("Apoio")
