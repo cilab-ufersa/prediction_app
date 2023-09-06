@@ -53,8 +53,11 @@ class Main():
         st.header("Realize o diagnóstico utilizando o modelo de inteligência artificial") 
         st.markdown('<style>div.row-widget.stButton > button {margin-left: 45%;}</style>', unsafe_allow_html=True)
         st.markdown('<style>div.row-widget.stButton > button {color: white; background-color: #1E90FF;}</style>', unsafe_allow_html=True)
-        st.button("Realizar Diagnóstico Hipotireoidismo",on_click=lambda:self.set_page(2))
-        st.button("Realizar Diagnóstico Eutireoidismo",on_click=lambda:self.set_page(1))
+        b_col1, b_col2, b_col3 = st.columns(3)
+        with b_col1:
+            st.button("Realizar Diagnóstico Hipotireoidismo",on_click=lambda:self.set_page(2))
+        with b_col2:
+            st.button("Realizar Diagnóstico Eutireoidismo",on_click=lambda:self.set_page(1))
         st.markdown("---")
         st.markdown('<style>h3{font-size: 15px;}</style>', unsafe_allow_html=True)
         st.subheader("Apoio")
