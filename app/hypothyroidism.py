@@ -1,8 +1,12 @@
 import streamlit as st
 import pandas as pd
+from utils import get_user_data_hypothyroidism
+from sklearn.preprocessing import StandardScaler
+import joblib
 
 class hypothyroidism:
-    def __init__(self):
+    def __init__(self, path):
+        self.path = path
         self.page()
         
     def page(self):
@@ -27,6 +31,13 @@ class hypothyroidism:
             st.markdown('<style>p{ text-align: justify;, font-weight: bold;}</style>', unsafe_allow_html=True)
             st.warning("**ATENÇÃO**: Embora os resultados de testes e modelos sejam importantes, é fundamental lembrar que eles não devem ser usados como uma única fonte de informação ou como uma decisão definitiva. É essencial que um profissional de saúde utilize seu conhecimento clínico e julgamento para interpretar e avaliar adequadamente esses resultados, garantindo que os pacientes recebam o tratamento mais adequado e seguro.")
             
+    def predicao(self, entradas_user):
+        model = joblib.load(self.path)
+        retorno = model.predict(entradas_user)
+        if retorno == 0:
+            st.success("Chances de ter hipotireoidismo: BAIXA")
+        if retorno == 1:
+            st.warning("Chances de ter hipotireoidismo: ALTA")
 
     def entradas(self):
         st.markdown('<style>h1{font-size: 30px;}</style>', unsafe_allow_html=True)
@@ -44,15 +55,27 @@ class hypothyroidism:
         t4u = st.number_input("T4 Livre *",min_value=0.0, max_value=3.0, value=0.0, key="t4u", help="Tiroxina livre, que é um hormônio produzido pela glândula tireoide")
         i131 = st.number_input("Tratamento com iodo-131 *",min_value=0.0, max_value=10.0, value=0.0, key = "i131", help="O tratamento com iodo-131 é um procedimento médico utilizado principalmente para tratar condições da tireoide")
         st.markdown('---')
-        tt4_measured = True
-        t4u_measured = True
-        t3_measured = True
+        tt4_measured = False
+        t4u_measured = False
+        t4u_measured = False
+        if tt4 != 0.0:
+            tt4_measured = True
+        if t4u_measured != 0.0:
+            t4u_measured = True
+        if t3_measured != 0.0:    
+            t3_measured = True
+
+        scaler = StandardScaler()
+        dados = get_user_data_hypothyroidism(tt4, tt4_measured, t4u_measured, t3_measured, fti, t3, tsh, t4u, gravidez, i131)
+        dados_s = scaler.fit_transform(dados.reshape(8, -1))
+        self.entradas_user = dados_s.reshape(-1, 8)
         button_Verify = (tsh == 0) or (t3 == 0) or (t4u == 0) or (tt4 == 0) or (fti == 0) or (i131 == 0)
+        
         if button_Verify:
             st.error("Preencha os campos Obrigatórios! *")
         but1, but2, but3 = st.columns(3)
         with but1:
-            st.button("Realizar predição",key="prediction", disabled = button_Verify)
+            st.button("Realizar predição", on_click=lambda: self.predicao(self.entradas_user),key="prediction", disabled = button_Verify)
         with but2:
             st.button("Limpar", on_click=lambda: self.limpar(), key="clear")
         with but3:

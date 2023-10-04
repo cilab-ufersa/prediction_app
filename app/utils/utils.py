@@ -35,6 +35,20 @@ def get_user_data(age, sex, sick, tsh, t3, tt4, t4u, fti):
     #print(features.values)
     return features.values
 
+def get_user_data_hypothyroidism(tt4, tt4_measured, t4u_measured, t3_measured, fti, t3, tsh, t4u, gravidez, i131):
+    dados = {"TT4": tt4,
+               "TT4 measured": tt4_measured,
+               "T4U measured": t4u_measured,
+               "T3 measured": t3_measured,
+               "FTI": fti,
+               "T3": t3,
+               "TSH": tsh,
+               "T4U": t4u,
+               "pregnant": gravidez,
+               "I131 treatmet" :i131
+               }
+    features = pd.DataFrame(dados, index = [0])
+    return features.values   
 
 
 def sex_string2int(sex):

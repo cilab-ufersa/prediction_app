@@ -98,7 +98,6 @@ class euthyroidism:
         #print(self.user_input_variables)
 
         st.markdown('---')
-        st.markdown('<style>div.row-widget.stButton > button {color: white; background-color: #1E90FF;}</style>', unsafe_allow_html=True)
         
         ver_button = (tsh == 0.0) or (t3 == 0.0) or (tt4 == 0.0) or (t4u == 0.0) or (fti == 0.0)
         if ver_button:
