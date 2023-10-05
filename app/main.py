@@ -22,7 +22,7 @@ class Main():
             euthyroidism(path="models/StackingClassifier.sav")
             st.button("Voltar",on_click=lambda:self.set_page(0))
         if st.session_state.page == 2:
-            hypothyroidism(path="models/StackingClassifier.sav")
+            hypothyroidism(path="models_file/XGBoostClassifier.sav")
             st.button("Voltar",on_click=lambda:self.set_page(0))
 
     def set_page(self,numero):

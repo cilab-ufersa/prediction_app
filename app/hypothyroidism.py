@@ -44,9 +44,11 @@ class hypothyroidism:
         st.header("Preencha os campos com os dados solicitados:")
         idade = st.number_input("Idade",min_value=1, max_value=100, value=1, key="age", help="Idade do paciente")
         sexo = st.selectbox("Sexo",("M","F"), key="sex")
-
+        gravidez = False
         if sexo == "F":
-            gravidez = st.selectbox("já teve filhos?",("Não","Sim"), key="pregnancy")
+            gravidezv = st.selectbox("já teve filhos?",("Não","Sim"), key="pregnancy")
+            if gravidezv == "Sim":
+                gravidez = True
         disturbio = st.selectbox("Possui algum distúrbio da tireoide?", ("Não", "Sim"), key="sick", help="Se o paciente possui algum distúrbio da tireoide já conhecido")
         tsh = st.number_input("TSH *",min_value=0.0, max_value=600.0, value=0.0, key="tsh", help="TSH é a sigla para hormônio estimulante da tireoide, que é produzido pela glândula pituitária")
         t3 = st.number_input("T3 *",min_value=0.0, max_value=11.0, value=0.0, key="t3", help="T3 é a sigla para triiodotironina, que é um hormônio produzido pela glândula tireoide")
@@ -57,18 +59,18 @@ class hypothyroidism:
         st.markdown('---')
         tt4_measured = False
         t4u_measured = False
-        t4u_measured = False
+        t3_measured = False
         if tt4 != 0.0:
             tt4_measured = True
-        if t4u_measured != 0.0:
+        if t4u != 0.0:
             t4u_measured = True
-        if t3_measured != 0.0:    
+        if t3 != 0.0:    
             t3_measured = True
 
         scaler = StandardScaler()
         dados = get_user_data_hypothyroidism(tt4, tt4_measured, t4u_measured, t3_measured, fti, t3, tsh, t4u, gravidez, i131)
-        dados_s = scaler.fit_transform(dados.reshape(8, -1))
-        self.entradas_user = dados_s.reshape(-1, 8)
+        dados_s = scaler.fit_transform(dados.reshape(10, -1))
+        self.entradas_user = dados_s.reshape(-1, 10)
         button_Verify = (tsh == 0) or (t3 == 0) or (t4u == 0) or (tt4 == 0) or (fti == 0) or (i131 == 0)
         
         if button_Verify:
