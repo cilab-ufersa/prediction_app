@@ -33,7 +33,7 @@ class euthyroidism:
         with col3:
        
             st.header("Métricas do modelo")
-            df = pd.read_csv("models/models.csv")
+            df = pd.read_csv("Euthyroidism/models/models.csv")
             col_1, col_2, col_3 = st.columns(3)
             col_1.metric("Acurácia", value=str(int(100*df['acuracia']))+"%", help="Acurácia do modelo: indica o quão precisa é a previsão de um modelo")
             col_2.metric("Precisão", value=str(int(100*df['precisao']))+"%", help="Precisão do modelo: indica a capacidade do modelo de prever corretamente os casos em que o paciente tem a doença")
@@ -95,6 +95,7 @@ class euthyroidism:
         user_data = get_user_data(age, sex, sick, tsh, t3, tt4, t4u, fti)
         data_scaled = scaler.fit_transform(user_data.reshape(8, -1))
         self.user_input_variables = data_scaled.reshape(-1, 8)
+        print(data_scaled)
         #print(self.user_input_variables)
 
         st.markdown('---')
