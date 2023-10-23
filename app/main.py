@@ -1,5 +1,5 @@
 import streamlit as st
-from hypothyroidism import *
+from app.hypothyroidism import *
 
 class Main():
     def __init__(self):
