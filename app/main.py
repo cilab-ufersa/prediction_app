@@ -18,7 +18,7 @@ class Main():
         if st.session_state.page == 0:
             self.home()
         if st.session_state.page == 1:
-            hypothyroidism(path="models_file/StackingModel (1).sav")
+            hypothyroidism(path="app/models_file/StackingModel (1).sav")
             st.button("Voltar",on_click=lambda:self.set_page(0))
 
     def set_page(self,numero):
