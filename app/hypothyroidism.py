@@ -42,20 +42,19 @@ class hypothyroidism:
     def entradas(self):
         st.markdown('<style>h1{font-size: 30px;}</style>', unsafe_allow_html=True)
         st.header("Preencha os campos com os dados solicitados:")
-        idade = st.number_input("Idade",min_value=1, max_value=100, value=1, key="age", help="Idade do paciente")
-        sexo = st.selectbox("Sexo",("M","F"), key="sex")
         gravidez = 0
-        if sexo == "F":
-            gravidezv = st.selectbox("já teve filhos?",("Não","Sim"), key="pregnancy")
-            if gravidezv == "Sim":
-                gravidez = 1
-        disturbio = st.selectbox("Possui algum distúrbio da tireoide?", ("Não", "Sim"), key="sick", help="Se o paciente possui algum distúrbio da tireoide já conhecido")
+        gravidezv = st.selectbox("já teve filhos?",("Não","Sim"), key="pregnancy")
+        if gravidezv == "Sim":
+            gravidez = 1
         tsh = st.number_input("TSH *",min_value=0.0, max_value=600.0, value=0.0, key="tsh", help="TSH é a sigla para hormônio estimulante da tireoide, que é produzido pela glândula pituitária")
         t3 = st.number_input("T3 *",min_value=0.0, max_value=11.0, value=0.0, key="t3", help="T3 é a sigla para triiodotironina, que é um hormônio produzido pela glândula tireoide")
         tt4 = st.number_input("T4 Total *",min_value=0.0, max_value=500.0, value=0.0, key="tt4", help="TT4 é a sigla para tiroxina total, que é um hormônio produzido pela glândula tireoide")
         fti = st.number_input("FTI *",min_value=0.0, max_value=1000.0, value=0.0, key="fti", help="FTI é a sigla para índice de tiroxina livre, que é um hormônio produzido pela glândula tireoide")
         t4u = st.number_input("T4 Livre *",min_value=0.0, max_value=3.0, value=0.0, key="t4u", help="Tiroxina livre, que é um hormônio produzido pela glândula tireoide")
-        i131 = st.number_input("Tratamento com iodo-131 *",min_value=0.0, max_value=10.0, value=0.0, key = "i131", help="O tratamento com iodo-131 é um procedimento médico utilizado principalmente para tratar condições da tireoide")
+        i131 = 0
+        i131v = st.selectbox("já realizou tratamento com iodo-131",("Não","Sim"), key = "i131", help="O tratamento com iodo-131 é um procedimento médico utilizado principalmente para tratar condições da tireoide")
+        if i131v =="Sim":
+            i131 = 1
         st.markdown('---')
         tt4_measured = 0
         t4u_measured = 0
@@ -71,7 +70,7 @@ class hypothyroidism:
         dados = get_user_data_hypothyroidism(tt4, tt4_measured, t4u_measured, t3_measured, fti, t3, tsh, t4u, gravidez, i131)
         dados_s = scaler.fit_transform(dados.reshape(10, -1))   
         self.entradas_user = dados_s.reshape(-1, 10)    
-        button_Verify = (tsh == 0) or (t3 == 0) or (t4u == 0) or (tt4 == 0) or (fti == 0) or (i131 == 0)
+        button_Verify = (tsh == 0) or (t3 == 0) or (t4u == 0) or (tt4 == 0) or (fti == 0)
         
         if button_Verify:
             st.error("Preencha os campos Obrigatórios! *")
@@ -84,13 +83,9 @@ class hypothyroidism:
             pass
     
     def limpar(self):
-        st.session_state.age = 1
-        st.session_state.sex = "M"
-        st.session_state.sick = "Não"
         st.session_state.tsh = 0.0
         st.session_state.t3 = 0.0
         st.session_state.t4 = 0.0
         st.session_state.tt4 = 0.0
         st.session_state.fti = 0.0
         st.session_state.t4u = 0.0
-        st.session_state.i131 = 0.0
