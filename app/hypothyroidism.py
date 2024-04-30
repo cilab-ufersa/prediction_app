@@ -3,6 +3,9 @@ import pandas as pd
 from utils import get_user_data_hypothyroidism
 from sklearn.preprocessing import StandardScaler
 import joblib
+import lime 
+from lime.lime_tabular import LimeTabularExplainer
+import streamlit.components.v1 as components
 
 class hypothyroidism:
     def __init__(self, path):
@@ -32,8 +35,37 @@ class hypothyroidism:
             st.warning("**ATENÇÃO**: Embora os resultados de testes e modelos sejam importantes, é fundamental lembrar que eles não devem ser usados como uma única fonte de informação ou como uma decisão definitiva. É essencial que um profissional de saúde utilize seu conhecimento clínico e julgamento para interpretar e avaliar adequadamente esses resultados, garantindo que os pacientes recebam o tratamento mais adequado e seguro.")
             
     def predicao(self, entradas_user):
-        model = joblib.load(self.path)
+        model = joblib.load(self.path)        
+        scaler = StandardScaler()
+        dados_s = scaler.fit_transform(entradas_user.reshape(10, -1))   
+        entradas_user = dados_s.reshape(-1, 10)    
         retorno = model.predict(entradas_user)
+        entradas_user = scaler.inverse_transform(entradas_user)
+        # use lime for explainability
+        explainer = LimeTabularExplainer(entradas_user, mode='classification', class_names=['Normal', 'Hypothyroidism'], 
+                                         feature_names=["TT4", "TT4_measured", "T4U_measured", "T3_measured", "FTI", "T3", "TSH", "T4U", "pregnant", "I131"])
+        
+        predict_fn = lambda x: model.predict_proba(x)
+        exp = explainer.explain_instance(entradas_user[0], predict_fn, num_features=10, top_labels=1)
+        
+        # show the results in the streamlit app 
+        st.markdown('---')
+        st.header("Explicabilidade do modelo")
+        st.markdown("Aqui estão as características que mais influenciaram o modelo na decisão:")
+        html = exp.as_html()
+        html = html.replace("TT4", "T4 Total")
+        html = html.replace("T4U", "T4 Livre")
+        html = html.replace("pregnant", "Grávida")
+        html = html.replace("I131", "Iodo-131")
+        html = html.replace("TT4_measured", "Medido TT4")
+        html = html.replace("T4U_measured", "Medido T4U")
+        html = html.replace("T3_measured", "Medido T3")
+        html = html.replace("Prediction", "Previsão")
+        html = html.replace("Hypothyroidism", "Hiportireoidismo")
+        html = html.replace("probability", "Probabilidade")
+        components.html(html, height=500)
+        st.markdown('---')
+        
         if retorno == 0:
             st.success("Chances de ter hipotireoidismo: BAIXA")
         if retorno == 1:
@@ -66,10 +98,11 @@ class hypothyroidism:
         if t3 != 0.0:    
             t3_measured = 1
 
-        scaler = StandardScaler()
         dados = get_user_data_hypothyroidism(tt4, tt4_measured, t4u_measured, t3_measured, fti, t3, tsh, t4u, gravidez, i131)
-        dados_s = scaler.fit_transform(dados.reshape(10, -1))   
-        self.entradas_user = dados_s.reshape(-1, 10)    
+        #scaler = StandardScaler()
+        #dados_s = scaler.fit_transform(dados.reshape(10, -1))   
+        #self.entradas_user = dados_s.reshape(-1, 10)    
+        self.entradas_user = dados
         button_Verify = (tsh == 0) or (t3 == 0) or (t4u == 0) or (tt4 == 0) or (fti == 0)
         
         if button_Verify:
