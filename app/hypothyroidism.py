@@ -37,7 +37,7 @@ class hypothyroidism:
         if retorno == 0:
             st.success("Chances de ter hipotireoidismo: BAIXA")
         if retorno == 1:
-            st.warning("Chances de ter hipotireoidismo: ALTA")
+            st.markdown("<span style='color:red'>Chances de ter hipotireoidismo: ALTA</span>", unsafe_allow_html=True)
 
     def entradas(self):
         st.markdown('<style>h1{font-size: 30px;}</style>', unsafe_allow_html=True)
