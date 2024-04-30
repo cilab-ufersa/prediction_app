@@ -40,9 +40,12 @@ class hypothyroidism:
         dados_s = scaler.fit_transform(entradas_user.reshape(10, -1))   
         entradas_user = dados_s.reshape(-1, 10)    
         retorno = model.predict(entradas_user)
-        entradas_user = scaler.inverse_transform(entradas_user)
+        #entradas_user = scaler.inverse_transform(entradas_user)
         # use lime for explainability
-        explainer = LimeTabularExplainer(entradas_user, mode='classification', class_names=['Normal', 'Hypothyroidism'], 
+        # load train data 
+        X_train = pd.read_csv('app/data/input_train.csv')
+
+        explainer = LimeTabularExplainer(X_train.values, mode='classification', class_names=['Normal', 'Hypothyroidism'], 
                                          feature_names=["TT4", "TT4_measured", "T4U_measured", "T3_measured", "FTI", "T3", "TSH", "T4U", "pregnant", "I131"])
         
         predict_fn = lambda x: model.predict_proba(x)
@@ -53,16 +56,16 @@ class hypothyroidism:
         st.header("Explicabilidade do modelo")
         st.markdown("Aqui estão as características que mais influenciaram o modelo na decisão:")
         html = exp.as_html()
+        html = html.replace("TT4_measured", "Medido TT4")
+        html = html.replace("T4U_measured", "Medido T4U")
         html = html.replace("TT4", "T4 Total")
         html = html.replace("T4U", "T4 Livre")
         html = html.replace("pregnant", "Grávida")
         html = html.replace("I131", "Iodo-131")
-        html = html.replace("TT4_measured", "Medido TT4")
-        html = html.replace("T4U_measured", "Medido T4U")
         html = html.replace("T3_measured", "Medido T3")
         html = html.replace("Prediction", "Previsão")
         html = html.replace("Hypothyroidism", "Hiportireoidismo")
-        html = html.replace("probability", "Probabilidade")
+        html = html.replace("probabilities", "Probabilidades")
         components.html(html, height=500)
         st.markdown('---')
         
