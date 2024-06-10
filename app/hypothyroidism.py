@@ -45,7 +45,7 @@ class hypothyroidism:
         # load train data 
         X_train = pd.read_csv('app/data/input_train.csv')
 
-        explainer = LimeTabularExplainer(X_train.values, mode='classification', class_names=['Normal', 'Hypothyroidism'], 
+        explainer = LimeTabularExplainer(X_train.values, mode='classification', class_names=['Hypothyroidism','Normal'], 
                                          feature_names=["TT4", "TT4_measured", "T4U_measured", "T3_measured", "FTI", "T3", "TSH", "T4U", "pregnant", "I131"])
         
         predict_fn = lambda x: model.predict_proba(x)
@@ -69,9 +69,9 @@ class hypothyroidism:
         components.html(html, height=500)
         st.markdown('---')
         
-        if retorno == 0:
-            st.success("Chances de ter hipotireoidismo: BAIXA")
         if retorno == 1:
+            st.success("Chances de ter hipotireoidismo: BAIXA")
+        if retorno == 0:
             st.markdown("<span style='color:red'>Chances de ter hipotireoidismo: ALTA</span>", unsafe_allow_html=True)
 
     def entradas(self):
